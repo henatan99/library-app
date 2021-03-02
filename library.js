@@ -14,10 +14,16 @@ let myLibrary = [];
 
 // constructor function for Book object
 
-function Book(title, author, isbn) {
+function Book(title, author, isbn, pages, status) {
   this.title = title;
   this.author = author;
   this.isbn = isbn;
+  this.pages = pages;
+  this.status = status;
+
+  this.info = function() {
+      "#{this.title} by #{this.author}, #{this.pages} pages, #{this.status}."
+  }
 }
 
 // adding book to myLibrary collection
@@ -30,14 +36,14 @@ function addBookToLibrary(book) {
 function appendBook(bookObj, booksId) {
     const books = document.querySelector(booksId);
     
-        // creating nodes 
+    // creating nodes 
     const book = document.createElement('tr');
     book.classList.add('book');
 
-        // rendering node 'tr'
+    // rendering node 'tr'
     books.appendChild(book);
 
-        // creating nodes 'td'
+    // creating nodes 'td'
     const title = document.createElement('td');
     title.classList.add('book-item');
     title.textContent = bookObj.title;
@@ -50,20 +56,39 @@ function appendBook(bookObj, booksId) {
     isbn.classList.add('book-item');
     isbn.textContent = bookObj.isbn;
 
-        // rendering nodes 'td'
+    const pages = document.createElement('td');
+    pages.classList.add('book-item');
+    pages.textContent = bookObj.pages;
+
+    const status = document.createElement('td');
+    status.classList.add('book-item');
+    status.textContent = bookObj.status;
+
+    // create the delete button in each book row
+    const buttontd = document.createElement('td');
+    buttontd.classList.add('del-book');  
+
+    const button = document.createElement('button');
+    button.textContent = 'Remove';
+
+    buttontd.appendChild(button);
+    // rendering nodes 'td'
 
     book.appendChild(title);
     book.appendChild(author);
-    book.appendChild(isbn);     
+    book.appendChild(isbn);
+    book.appendChild(pages);
+    book.appendChild(status); 
+    book.appendChild(buttontd);
 }
 
 // create book objects manually 
 
-const book1 = new Book('Book1', 'Author1', 'isbn1');
+const book1 = new Book('Book1', 'Author1', 'isbn1', 250, 'read');
 addBookToLibrary(book1);
-const book2 = new Book('Book2', 'Author1', 'isbn1');
+const book2 = new Book('Book2', 'Author1', 'isbn1', 420, 'not read');
 addBookToLibrary(book2);
-const book3 = new Book('Book3', 'Author1', 'isbn1');
+const book3 = new Book('Book3', 'Author1', 'isbn1', 720, 'not read');
 addBookToLibrary(book3);
 
 // function to render book table list rows 
