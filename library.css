@@ -1,0 +1,21 @@
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.books-container {
+    width: 80%;
+}
+
+.books-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.books-list, .header-item, .list-item {
+    border: 1px solid black;
+}
