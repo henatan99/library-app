@@ -1,10 +1,10 @@
 function toggle() {
     var x = document.getElementById("book-form");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }
 
 // Book list table 
@@ -82,14 +82,20 @@ function appendBook(bookObj, booksId) {
     book.appendChild(buttontd);
 }
 
-// create book objects manually 
+// create book objects from form 
 
-const book1 = new Book('Book1', 'Author1', 'isbn1', 250, 'read');
-addBookToLibrary(book1);
-const book2 = new Book('Book2', 'Author1', 'isbn1', 420, 'not read');
-addBookToLibrary(book2);
-const book3 = new Book('Book3', 'Author1', 'isbn1', 720, 'not read');
-addBookToLibrary(book3);
+var titl = document.getElementById('#title');
+var auth = document.getElementById('#author');
+var isb = document.getElementById('#isbn');
+var page = document.getElementById('#pages');
+var stat = document.getElementById('#status');
+
+const submit = document.querySelector('#submit');
+submit.addEventListener('click', () => {
+    const book = new Book(titl, auth, isb, page, stat);
+    addBookToLibrary(book);
+    listBooks(myLibrary);
+});
 
 // function to render book table list rows 
 
