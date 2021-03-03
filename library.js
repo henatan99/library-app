@@ -1,16 +1,11 @@
-// function toggle() {
-//     var x = document.getElementById("bookform");
-//     if (x.style.display === "none") {
-//         x.style.display = "block";
-//     } else {
-//         x.style.display = "none";
-//     }
-// }
-
-// Book list table 
-
-// array variable to hold book objects 
-let myLibrary = [];
+function toggle() {
+    var x = document.getElementById("bookform");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
 
 // constructor function for Book object
 
@@ -26,29 +21,35 @@ function Book(title, author, isbn, pages, status) {
   }
 }
 
-// get books from storage
-function getBooks() {
-    myLibrary = JSON.parse(localStorage.getItem('myLibrary'));
-    return myLibrary;
-}
-
-function removeBook(isbn) {
-    const books = getBooks();
-
-    books.forEach((book, index) => {
-        if(book.isbn === isbn) {
-            books.splice(index, 1);
+// store class 
+class Store {
+    static getBooks() {
+        let books;
+        if(localStorage.getItem('books') === null) {
+            books = [];
         }
-    });
-    localStorage.setItem('books', JSON.stringify(books));
-}
+        else {
+            books = JSON.parse(localStorage.getItem('books'));
+        }
 
-// adding book to myLibrary collection
-function addBookToLibrary(book) {
-    // const books = getBooks();
-    // books.push(book);
-    // localStorage.setItem('books', JSON.stringify(books));
-    myLibrary.push(book);
+        return books;
+    }
+
+    static addBookToLibrary(book) {
+        const books = Store.getBooks();
+        books.push(book);
+        localStorage.setItem('books', JSON.stringify(books));
+    }
+
+    static removeBook(isbn) {
+        const books = Store.getBooks();
+        books.forEach((book, index) => {
+            if(book.isbn === isbn) {
+                books.splice(index, 1);
+            }
+        });
+        localStorage.setItem('books', JSON.stringify(books));
+    }
 }
 
 // DOM manipulation 
@@ -114,27 +115,18 @@ document.querySelector('#bookform').addEventListener('submit', (e) => {
     const status = document.querySelector('#status').value;
 
     const book = new Book(title, author, isbn, pages, status);
-    addBookToLibrary(book);
+    Store.addBookToLibrary(book);
+    appendBook(book, '#books');
     console.log(book);
 });
 
-// document.querySelector('#bookform').addEventListener("submit", function(){ alert("Hello World!"); });
-
-const book1 = new Book("Book1", "Author1", "isbn1", "123", "read");
-addBookToLibrary(book1);
-// console.log(myLibrary);
-
 // function to render book table list rows 
 
-function listBooks(books) {
-    if(books != null) {
-        books.forEach((bookObj) => appendBook(bookObj, '#books'));
-    }
-
-    // books.forEach((bookObj) => appendBook(bookObj, '#books'));
+function listBooks(books) {   
+    books.forEach((bookObj) => appendBook(bookObj, '#books'));
 }
 
 // calling listBooks function upon the myLibrary books collection 
 
-getBooks();
+myLibrary = Store.getBooks();
 listBooks(myLibrary);
