@@ -52,6 +52,7 @@ class Store {
     }
 }
 
+
 // DOM manipulation 
 
 function appendBook(bookObj, booksId) {
@@ -60,6 +61,7 @@ function appendBook(bookObj, booksId) {
     // creating nodes 
     const book = document.createElement('tr');
     book.classList.add('book');
+    book.setAttribute('id', 'book');
 
     // rendering node 'tr'
     books.appendChild(book);
@@ -88,9 +90,11 @@ function appendBook(bookObj, booksId) {
     // create the delete button in each book row
     const buttontd = document.createElement('td');
     buttontd.classList.add('del-book');  
-
+    
     const button = document.createElement('button');
     button.textContent = 'Remove';
+    button.setAttribute('type', 'click');
+    buttontd.classList.add('btn');
 
     buttontd.appendChild(button);
     // rendering nodes 'td'
@@ -114,10 +118,33 @@ document.querySelector('#bookform').addEventListener('submit', (e) => {
     const pages = document.querySelector('#pages').value;
     const status = document.querySelector('#status').value;
 
-    const book = new Book(title, author, isbn, pages, status);
-    Store.addBookToLibrary(book);
-    appendBook(book, '#books');
-    console.log(book);
+    if(title === '' || author === '' || isbn === '' || pages === '' || status === '') {
+        alert('Please fill in all fields', 'danger');
+    }
+    
+    else {
+        const book = new Book(title, author, isbn, pages, status);
+        Store.addBookToLibrary(book);
+        appendBook(book, '#books');
+    }   
+    
+    document.querySelector('#title').value = '';
+    document.querySelector('#author').value = '';
+    document.querySelector('#isbn').value = '';
+    document.querySelector('#pages').value = '';
+    document.querySelector('#status').value = '';
+});
+
+
+document.querySelector('#books').addEventListener('click', (e) => {    
+    let parent     
+    if (e.target.parentElement.classList.contains('del-book')) {
+        parent = e.target.parentElement.parentElement.childNodes[2].textContent;
+    }      
+    
+    e.target.parentElement.parentElement.remove(); 
+    Store.removeBook(parent);
+     
 });
 
 // function to render book table list rows 
