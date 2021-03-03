@@ -109,7 +109,7 @@ function appendBook(bookObj, booksId) {
 
 // create book objects from form 
 
-const booksubmit = document.querySelector('#booksubmit');
+
 document.querySelector('#bookform').addEventListener('submit', (e) => {   
     e.preventDefault();
     const title = document.querySelector('#title').value;
@@ -119,8 +119,16 @@ document.querySelector('#bookform').addEventListener('submit', (e) => {
     const status = document.querySelector('#status').value;
     
     if(title === '' || author === ''  || isbn === '' || pages === '' || status === '') {
-        alert('Fill all the fields');
+        const bookform = document.querySelector('#bookform');
+        const div = document.createElement('div');
+        div.className='alert';
+        bookform.appendChild(div);
+        let message = 'Fill all the fields';        
+        div.appendChild(document.createTextNode(message));
+        
+        setTimeout(() => document.querySelector('.alert').remove(), 3000);
     }
+
     else {
         const book = new Book(title, author, isbn, pages, status);
         Store.addBookToLibrary(book);
