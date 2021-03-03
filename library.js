@@ -117,16 +117,16 @@ document.querySelector('#bookform').addEventListener('submit', (e) => {
     const isbn = document.querySelector('#isbn').value;
     const pages = document.querySelector('#pages').value;
     const status = document.querySelector('#status').value;
-
-    if(title === '' || author === '' || isbn === '' || pages === '' || status === '') {
-        alert('Please fill in all fields', 'danger');
-    }
     
+    if(title === '' || author === ''  || isbn === '' || pages === '' || status === '') {
+        alert('Fill all the fields');
+    }
     else {
         const book = new Book(title, author, isbn, pages, status);
         Store.addBookToLibrary(book);
-        appendBook(book, '#books');
-    }   
+        appendBook(book, '#books'); 
+    }
+       
     
     document.querySelector('#title').value = '';
     document.querySelector('#author').value = '';
@@ -139,12 +139,10 @@ document.querySelector('#bookform').addEventListener('submit', (e) => {
 document.querySelector('#books').addEventListener('click', (e) => {    
     let parent     
     if (e.target.parentElement.classList.contains('del-book')) {
-        parent = e.target.parentElement.parentElement.childNodes[2].textContent;
-    }      
-    
-    e.target.parentElement.parentElement.remove(); 
-    Store.removeBook(parent);
-     
+        parent = e.target.parentElement.parentElement.childNodes[2];
+        parent.parentElement.remove(); 
+        Store.removeBook(parent.textContent);
+    } 
 });
 
 // function to render book table list rows 
