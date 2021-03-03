@@ -1,11 +1,11 @@
-function toggle() {
-    var x = document.getElementById("book-form");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-}
+// function toggle() {
+//     var x = document.getElementById("bookform");
+//     if (x.style.display === "none") {
+//         x.style.display = "block";
+//     } else {
+//         x.style.display = "none";
+//     }
+// }
 
 // Book list table 
 
@@ -26,8 +26,28 @@ function Book(title, author, isbn, pages, status) {
   }
 }
 
+// get books from storage
+function getBooks() {
+    myLibrary = JSON.parse(localStorage.getItem('myLibrary'));
+    return myLibrary;
+}
+
+function removeBook(isbn) {
+    const books = getBooks();
+
+    books.forEach((book, index) => {
+        if(book.isbn === isbn) {
+            books.splice(index, 1);
+        }
+    });
+    localStorage.setItem('books', JSON.stringify(books));
+}
+
 // adding book to myLibrary collection
 function addBookToLibrary(book) {
+    // const books = getBooks();
+    // books.push(book);
+    // localStorage.setItem('books', JSON.stringify(books));
     myLibrary.push(book);
 }
 
@@ -84,25 +104,37 @@ function appendBook(bookObj, booksId) {
 
 // create book objects from form 
 
-var titl = document.getElementById('#title');
-var auth = document.getElementById('#author');
-var isb = document.getElementById('#isbn');
-var page = document.getElementById('#pages');
-var stat = document.getElementById('#status');
+const booksubmit = document.querySelector('#booksubmit');
+document.querySelector('#bookform').addEventListener('submit', (e) => {   
+    e.preventDefault();
+    const title = document.querySelector('#title').value;
+    const author = document.querySelector('#author').value;
+    const isbn = document.querySelector('#isbn').value;
+    const pages = document.querySelector('#pages').value;
+    const status = document.querySelector('#status').value;
 
-const submit = document.querySelector('#submit');
-submit.addEventListener('click', () => {
-    const book = new Book(titl, auth, isb, page, stat);
+    const book = new Book(title, author, isbn, pages, status);
     addBookToLibrary(book);
-    listBooks(myLibrary);
+    console.log(book);
 });
+
+// document.querySelector('#bookform').addEventListener("submit", function(){ alert("Hello World!"); });
+
+const book1 = new Book("Book1", "Author1", "isbn1", "123", "read");
+addBookToLibrary(book1);
+// console.log(myLibrary);
 
 // function to render book table list rows 
 
 function listBooks(books) {
-    books.forEach((bookObj) => appendBook(bookObj, '#books'));
+    if(books != null) {
+        books.forEach((bookObj) => appendBook(bookObj, '#books'));
+    }
+
+    // books.forEach((bookObj) => appendBook(bookObj, '#books'));
 }
 
 // calling listBooks function upon the myLibrary books collection 
 
+getBooks();
 listBooks(myLibrary);
