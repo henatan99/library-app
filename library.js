@@ -1,12 +1,3 @@
-function toggle() {
-    var x = document.getElementById("bookform");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-}
-
 // constructor function for Book object
 
 function Book(title, author, isbn, pages, status) {
@@ -16,188 +7,185 @@ function Book(title, author, isbn, pages, status) {
   this.pages = pages;
   this.status = status;
 
-  this.info = function() {
-      "${this.title} by ${this.author}, ${this.pages} pages, ${this.status}."
+  this.info = function () {
+    '#{this.title} by #{this.author}, #{this.pages} pages, #{this.status}.';
+  };
+}
+
+// store class
+class Store {
+  static getBooks() {
+    let books;
+    if (localStorage.getItem('books') === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem('books'));
+    }
+
+    return books;
+  }
+
+  static addBookToLibrary(book) {
+    const books = Store.getBooks();
+    books.push(book);
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+
+  static removeBook(isbn) {
+    const books = Store.getBooks();
+    books.forEach((book, index) => {
+      if (book.isbn === isbn) {
+        books.splice(index, 1);
+      }
+    });
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+
+  static editBookStatus(isbn, stat) {
+    const books = Store.getBooks();
+    books.forEach((book) => {
+      if (book.isbn === isbn) {
+        book.status = stat;
+      }
+    });
+    localStorage.setItem('books', JSON.stringify(books));
   }
 }
 
-// store class 
-class Store {
-    static getBooks() {
-        let books;
-        if(localStorage.getItem('books') === null) {
-            books = [];
-        }
-        else {
-            books = JSON.parse(localStorage.getItem('books'));
-        }
 
-        return books;
-    }
-
-    static addBookToLibrary(book) {
-        const books = Store.getBooks();
-        books.push(book);
-        localStorage.setItem('books', JSON.stringify(books));
-    }
-
-    static removeBook(isbn) {
-        const books = Store.getBooks();
-        books.forEach((book, index) => {
-            if(book.isbn === isbn) {
-                books.splice(index, 1);
-            }
-        });
-        localStorage.setItem('books', JSON.stringify(books));
-    }
-
-    static editBookStatus(isbn, stat) {
-        const books = Store.getBooks();
-        books.forEach((book, index) => {
-            if(book.isbn === isbn) {
-                book.status = stat;
-            }
-        });
-        localStorage.setItem('books', JSON.stringify(books));
-    }
-}
-
-
-// DOM manipulation 
+// DOM manipulation
 
 function appendBook(bookObj, booksId) {
-    const books = document.querySelector(booksId);
-    
-    // creating nodes 
-    const book = document.createElement('tr');
-    book.classList.add('book');
-    book.setAttribute('id', 'book');
+  const books = document.querySelector(booksId);
 
-    // rendering node 'tr'
-    books.appendChild(book);
+  // creating nodes
+  const book = document.createElement('tr');
+  book.classList.add('book');
+  book.setAttribute('id', 'book');
 
-    // creating nodes 'td'
-    const title = document.createElement('td');
-    title.classList.add('book-item');
-    title.textContent = bookObj.title;
+  // rendering node 'tr'
+  books.appendChild(book);
 
-    const author = document.createElement('td');
-    author.classList.add('book-item');
-    author.textContent = bookObj.author;
+  // creating nodes 'td'
+  const title = document.createElement('td');
+  title.classList.add('book-item');
+  title.textContent = bookObj.title;
 
-    const isbn = document.createElement('td');
-    isbn.classList.add('book-item');
-    isbn.textContent = bookObj.isbn;
+  const author = document.createElement('td');
+  author.classList.add('book-item');
+  author.textContent = bookObj.author;
 
-    const pages = document.createElement('td');
-    pages.classList.add('book-item');
-    pages.textContent = bookObj.pages;
+  const isbn = document.createElement('td');
+  isbn.classList.add('book-item');
+  isbn.textContent = bookObj.isbn;
 
-    const status = document.createElement('td');
-    status.classList.add('book-item');
-    status.classList.add('read-status');    
-// ----
-    const toggle = document.createElement('button');
-    toggle.textContent = bookObj.status;        
-    toggle.setAttribute('type', 'click');
-    toggle.classList.add('btn');
+  const pages = document.createElement('td');
+  pages.classList.add('book-item');
+  pages.textContent = bookObj.pages;
 
-    status.appendChild(toggle);
+  const status = document.createElement('td');
+  status.classList.add('book-item');
+  status.classList.add('read-status');
+  // ----
+  const toggle = document.createElement('button');
+  toggle.textContent = bookObj.status;
+  toggle.setAttribute('type', 'click');
+  toggle.classList.add('btn');
 
-    // create the delete button in each book row
-    const buttontd = document.createElement('td');
-    buttontd.classList.add('del-book');  
-    
-    const button = document.createElement('button');
-    button.textContent = 'Remove';
-    button.setAttribute('type', 'click');
-    buttontd.classList.add('btn');
+  status.appendChild(toggle);
 
-    buttontd.appendChild(button);
-    // rendering nodes 'td'
+  // create the delete button in each book row
+  const buttontd = document.createElement('td');
+  buttontd.classList.add('del-book');
 
-    book.appendChild(title);
-    book.appendChild(author);
-    book.appendChild(isbn);
-    book.appendChild(pages);
-    book.appendChild(status); 
-    book.appendChild(buttontd);
+  const button = document.createElement('button');
+  button.textContent = 'Remove';
+  button.setAttribute('type', 'click');
+  buttontd.classList.add('btn');
+
+  buttontd.appendChild(button);
+  // rendering nodes 'td'
+
+  book.appendChild(title);
+  book.appendChild(author);
+  book.appendChild(isbn);
+  book.appendChild(pages);
+  book.appendChild(status);
+  book.appendChild(buttontd);
 }
 
-// create book objects from form 
+// create book objects from form
 
 
-document.querySelector('#bookform').addEventListener('submit', (e) => {   
-    e.preventDefault();
-    const title = document.querySelector('#title').value;
-    const author = document.querySelector('#author').value;
-    const isbn = document.querySelector('#isbn').value;
-    const pages = document.querySelector('#pages').value;
-    const status = document.querySelector('#status').value;
-    
-    if(title === '' || author === ''  || isbn === '' || pages === '' || status === '') {
-        const bookform = document.querySelector('#bookform');
-        const div = document.createElement('div');
-        div.className='alert';
-        bookform.appendChild(div);
-        let message = 'Fill all the fields';        
-        div.appendChild(document.createTextNode(message));
-        
-        setTimeout(() => document.querySelector('.alert').remove(), 3000);
-    }
+document.querySelector('#bookform').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = document.querySelector('#title').value;
+  const author = document.querySelector('#author').value;
+  const isbn = document.querySelector('#isbn').value;
+  const pages = document.querySelector('#pages').value;
+  const status = document.querySelector('#status').value;
 
-    else {
-        const book = new Book(title, author, isbn, pages, status);
-        Store.addBookToLibrary(book);
-        appendBook(book, '#books'); 
-    }
-       
-    
-    document.querySelector('#title').value = '';
-    document.querySelector('#author').value = '';
-    document.querySelector('#isbn').value = '';
-    document.querySelector('#pages').value = '';
-    document.querySelector('#status').value = '';
+  if (title === '' || author === '' || isbn === '' || pages === '' || status === '') {
+    const bookform = document.querySelector('#bookform');
+    const div = document.createElement('div');
+    div.className = 'alert';
+    bookform.appendChild(div);
+    const message = 'Fill all the fields';
+    div.appendChild(document.createTextNode(message));
+
+    setTimeout(() => document.querySelector('.alert').remove(), 3000);
+  } else {
+    const book = new Book(title, author, isbn, pages, status);
+    Store.addBookToLibrary(book);
+    appendBook(book, '#books');
+  }
+
+
+  document.querySelector('#title').value = '';
+  document.querySelector('#author').value = '';
+  document.querySelector('#isbn').value = '';
+  document.querySelector('#pages').value = '';
+  document.querySelector('#status').value = '';
 });
 
 
-document.querySelector('#books').addEventListener('click', (e) => {    
-    let parent     
-    if (e.target.parentElement.classList.contains('del-book')) {
-        parent = e.target.parentElement.parentElement.childNodes[2];
-        parent.parentElement.remove(); 
-        Store.removeBook(parent.textContent);
-    } 
+document.querySelector('#books').addEventListener('click', (e) => {
+  const btn = e.target;
+  if (btn.parentElement.classList.contains('del-book')) {
+    const book = btn.parentElement.parentElement;
+    const bookIsbn = book.childNodes[2];
+    book.remove();
+    Store.removeBook(bookIsbn.textContent);
+  }
 });
 
 // toggle function to change the read status in the books list
 
 document.querySelector('#books').addEventListener('click', (e) => {
-    e.preventDefault();
-    let book_isbn;
+  e.preventDefault();
+  const btn = e.target;
 
-    if (e.target.parentElement.classList.contains('read-status')) {
-        book_isbn = e.target.parentElement.parentElement.childNodes[2];
-        read_status = e.target;
-        
-        if (read_status.textContent === 'read') {
-            read_status.textContent = 'not-read';
-            Store.editBookStatus(book_isbn.textContent, 'not-read');             
-        }            
-        else {
-            read_status.textContent = 'read';
-            Store.editBookStatus(book_isbn.textContent, 'read');
-        }         
+  if (btn.parentElement.classList.contains('read-status')) {
+    const book = btn.parentElement.parentElement;
+    const bookIsbn = book.childNodes[2];
+
+    if (btn.textContent === 'read') {
+      btn.textContent = 'not-read';
+      Store.editBookStatus(bookIsbn.textContent, 'not-read');
+    } else {
+      btn.textContent = 'read';
+      Store.editBookStatus(bookIsbn.textContent, 'read');
     }
+  }
 });
 
-// function to render book table list rows 
+// function to render book table list rows
 
-function listBooks(books) {   
-    books.forEach((bookObj) => appendBook(bookObj, '#books'));
+function listBooks(books) {
+  books.forEach((bookObj) => appendBook(bookObj, '#books'));
 }
 
-// calling listBooks function upon the myLibrary books collection 
+// calling listBooks function upon the myLibrary books collection
 
-myLibrary = Store.getBooks();
+const myLibrary = Store.getBooks();
 listBooks(myLibrary);
