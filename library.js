@@ -17,7 +17,7 @@ function Book(title, author, isbn, pages, status) {
   this.status = status;
 
   this.info = function() {
-      "#{this.title} by #{this.author}, #{this.pages} pages, #{this.status}."
+      "${this.title} by ${this.author}, ${this.pages} pages, ${this.status}."
   }
 }
 
