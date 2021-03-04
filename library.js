@@ -84,8 +84,14 @@ function appendBook(bookObj, booksId) {
     pages.textContent = bookObj.pages;
 
     const status = document.createElement('td');
-    status.classList.add('book-item');
-    status.textContent = bookObj.status;
+    status.classList.add('book-item');    
+// ----
+    const toggle = document.createElement('button');
+    toggle.textContent = bookObj.status;        
+    toggle.setAttribute('type', 'click');
+    toggle.classList.add('btn');
+
+    status.appendChild(toggle);
 
     // create the delete button in each book row
     const buttontd = document.createElement('td');
