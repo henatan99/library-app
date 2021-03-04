@@ -50,6 +50,16 @@ class Store {
         });
         localStorage.setItem('books', JSON.stringify(books));
     }
+
+    static editBookStatus(isbn, stat) {
+        const books = Store.getBooks();
+        books.forEach((book, index) => {
+            if(book.isbn === isbn) {
+                book.status = stat;
+            }
+        });
+        localStorage.setItem('books', JSON.stringify(books));
+    }
 }
 
 
@@ -84,7 +94,8 @@ function appendBook(bookObj, booksId) {
     pages.textContent = bookObj.pages;
 
     const status = document.createElement('td');
-    status.classList.add('book-item');    
+    status.classList.add('book-item');
+    status.classList.add('read-status');    
 // ----
     const toggle = document.createElement('button');
     toggle.textContent = bookObj.status;        
@@ -157,6 +168,27 @@ document.querySelector('#books').addEventListener('click', (e) => {
         parent.parentElement.remove(); 
         Store.removeBook(parent.textContent);
     } 
+});
+
+// toggle function to change the read status in the books list
+
+document.querySelector('#books').addEventListener('click', (e) => {
+    e.preventDefault();
+    let book_isbn;
+
+    if (e.target.parentElement.classList.contains('read-status')) {
+        book_isbn = e.target.parentElement.parentElement.childNodes[2];
+        read_status = e.target;
+        
+        if (read_status.textContent === 'read') {
+            read_status.textContent = 'not-read';
+            Store.editBookStatus(book_isbn.textContent, 'not-read');             
+        }            
+        else {
+            read_status.textContent = 'read';
+            Store.editBookStatus(book_isbn.textContent, 'read');
+        }         
+    }
 });
 
 // function to render book table list rows 
