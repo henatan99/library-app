@@ -1,0 +1,55 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.books-container {
+  width: 80%;
+}
+
+.book-form {
+  width: 100%;
+  display: none;
+}
+
+.form-item {
+  width: 300px;
+  margin-bottom: 1rem;
+}
+
+.form-input {
+  width: inherit;
+}
+
+.add-btn {
+  width: 30%;
+  height: 2rem;
+  margin-bottom: 2rem;
+}
+
+.book-submit {
+  width: 30%;
+  height: 2rem;
+  margin-bottom: 2rem;
+}
+
+.books-list {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.header-item,
+.book-item {
+  border: 1px solid black;
+}
+
+.books-header {
+  height: 3rem;
+}
+
+.book {
+  height: 2rem;
+}

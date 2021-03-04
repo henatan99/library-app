@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="library.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="books-container">            
+            <h1 class="title"> My Books Store</h1>            
+            <button id="add-btn" class="add-btn" onclick="toggle()">Add Book</button>
+            <form class="book-form" id="bookform">
+                <div class="form-item">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" class="form-input" width="500">
+                </div>
+                <div class="form-item">
+                    <label for="author">Author</label>
+                    <input type="text" id="author" name="author" class="form-input">
+                </div>
+                <div class="form-item">
+                    <label for="isbn">Isbn</label>
+                   <input type="text" id="isbn" name="isbn" class="form-input"> 
+                </div>
+                <div class="form-item">
+                    <label for="pages">Pages</label>
+                   <input type="text" id="pages" name="pages" class="form-input"> 
+                </div>
+                <div class="form-item">
+                    <label for="status">Status</label>
+                   <!-- <input type="text" id="status" name="status" class="form-input">  -->
+                   <select id="status">
+                       <option value="choose">Choose read status</option>
+                       <option value="read">Read</option>
+                       <option value="not-read">Not read</option>
+                   </select>
+                </div>                
+                <input type="submit" id="booksubmit" class="book-submit">
+            </form>
+
+            <table class="books-list">
+                <thead class="list_header">
+                    <tr class="books-header">
+                        <th class="header-item">Title</th>
+                        <th class="header-item">Author</th>
+                        <th class="header-item">isbn</th>
+                        <th class="header-item">Pages</th>
+                        <th class="header-item">Status</th>                        
+                    </tr>                    
+                </thead>
+                <tbody class="books" id="books">
+                    
+                </tbody>            
+            </table>
+        </div>        
+    </div>
+
+    <script src="library.js"></script>
+    <script>
+         function toggle() {
+        const x = document.getElementById('bookform');
+        if (x.style.display === 'none') {
+          x.style.display = 'block';
+        } else {
+          x.style.display = 'none';
+        }
+      }      
+    </script>   
+
+</body>
+</html>
