@@ -1,14 +1,14 @@
 # library-app
-This project is building a simple  library web app which lets users to store book objects, to delete and edit read status using JavaScript, HTML and CSS 
+This project is building a simple  library web app that lets users store book objects, to delete and edit read status using JavaScript, HTML, and CSS 
 
 ## Description 
-The library app has lets the user  to view list of stired books, add a new book, edit its read status and delete a book.
+The library app has let the user view a list of stored books, add a new book, edit its read status and delete a book.
 
 ### Add book form
-The user adds a new book using a add-book form. The form has
+The user adds a new book using an add-book form. The form has
 - input tag for title
 - input tag for author
-- input tag for isbn
+- input tag for ISBN
 - input tag for pages
 - select tag for read-status
 - submit button 
